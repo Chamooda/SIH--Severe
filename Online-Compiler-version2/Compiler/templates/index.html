@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans&family=Space+Grotesk&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+    <title>Python Compiler</title>
+
+    <style>
+      body{
+        background-color: #120d33;
+        margin:0;
+        font-family:'Roboto Mono',monospace;
+        color:#fedd9e;
+        width:100%;
+        position:absolute;  
+      }
+      
+      .form-control1{
+        background-color: #120d12;
+        border-style:solid;
+        float:left;
+        position:relative;
+        margin:20px 20px 20px 15px;
+        height:1017px;
+        border-color:#7f7f7f;
+        width:47%;
+        padding:10px;
+        color: #bcc458;
+      }
+      
+      .form-control2{
+        background-color:#120d12;
+        border-style:solid;
+        border-color:#7f7f7f;
+        width:47%;
+        height:450px;
+        position:relative;
+        margin:20px 15px 15px 0px;
+        float:right;
+        padding:10px;
+        color: #bcc458;
+      }
+
+      .expected{
+        margin-top:50px;
+        right:227px;
+        float:right;
+        width:30%;
+        position:relative;
+      }
+
+      .form-control3{
+        background-color:#120d12;
+        border-style:solid;
+        border-color:#7f7f7f;
+        width:47%;
+        height:450px;
+        position:relative;
+        margin:20px 15px 15px 0px;
+        float:right;
+        padding:10px;
+        color: #bcc458;
+      }
+
+      h1{
+        margin: 10px auto 50px auto;
+        position:relative;
+        text-align: center;
+      }
+
+      .input-text{
+        display:inline-block;
+        position:relative;
+        margin-left:15px;
+        width:35%;
+      }
+
+      .output-text{
+        display:inline-block;
+        left:80px;
+        width:30%;
+        position:relative;
+      }
+
+      .btn-primary{
+        display:inline-block;
+        background-color: #8F43EE;
+        border-radius:10px;
+        position:relative;
+        padding:10px 10px;
+        left:40px;
+      }
+
+      .btn-primary:hover{
+        background-color: #8F43EE;
+        opacity: 80%;
+      }
+
+      /*.topbar{
+        position:fixed;
+        width:100%;
+        height:100px;
+        padding:30px auto 30px auto;
+        background-color: aquamarine;
+        color:coral;
+        position:relative;
+        margin:0px 0px 0px 0px;
+        border-top:0px;
+      }*/
+
+      .test-cases{
+        background-color:#ea4435c0;
+        border-radius: 10px;
+        display:inline-block;
+        padding: 10px 10px;
+        position:relative;
+        left: 80px;
+        color:#ffffff;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!--<div class="topbar">
+    </div>-->
+
+    <h1>Python Compiler</h1>
+
+    <form action="/runcode" method="post">
+      {% csrf_token %}
+      <label class="input-text" for="CodeArea">Type your code here to progress in the game</label>
+      <button type="submit" class="btn-primary">Run Code</button>
+      <label class ="output-text" for="Output">Your Output</label>
+      <div class="test-cases">
+        {{result}}
+      </div>
+      <textarea type="text" class="form-control1" id="CodeArea" name="CodeArea" rows="40">{{code}}</textarea>
+      <textarea type="text" class="form-control2" id="CodeArea" name="CodeArea" rows="40" disabled>{{output}}</textarea>
+      <label class="expected" for="expected-output">Expected Output</label>
+      <textarea type="text" class="form-control3" id="CodeArea" name="CodeArea" rows="40" disabled>{{expected}}</textarea>
+    </form>
+
+    <script>
+      $("textarea").keydown(function(e) {
+    if(e.keyCode === 9) { // tab was pressed
+        // get caret position/selection
+        var start = this.selectionStart;
+            end = this.selectionEnd;
+
+        var $this = $(this);
+
+        // set textarea value to: text before caret + tab + text after caret
+        $this.val($this.val().substring(0, start)
+                    + "\t"
+                    + $this.val().substring(end));
+
+        // put caret at right position again
+        this.selectionStart = this.selectionEnd = start + 1;
+
+        // prevent the focus lose
+        return false;
+    }
+});
+    </script>
+
+  </body>
+</html>
