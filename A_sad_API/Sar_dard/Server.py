@@ -15,7 +15,9 @@ def justcheckin():
         'status': 'ok',
         'message': 'Hello World!',
         'brocode': '200'})
-
+@app.route('/')
+def index():
+    return "ok"
 
 
 if __name__ == '__main__':
