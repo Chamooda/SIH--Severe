@@ -1,25 +1,26 @@
 import csv
 
-
-#adding csv to list
 domain_list =[]
-csv_file_path = "top200.csv"
+mal_domain_list=[]
 
-with open(csv_file_path, mode='r', newline='') as file:
-    
-    csv_reader = csv.DictReader(file)
-    for row in csv_reader:
-        domain = row["domain"]
-        domain_list.append(domain)
+csv_file_path = "top-1m.csv"
+mal_csv_file_path = "verified_online.csv"
+
+def addToList(csv_file_path,domain_list):
+    with open(csv_file_path, mode='r', newline='',encoding='utf-8') as file:
+        
+        csv_reader = csv.DictReader(file)
+
+        for row in csv_reader:
+
+            domain = row["domain"]
+            domain_list.append(domain)
+
 #print(domain_list)
-#-----------------------------------------------------------------------#
-
 
 def is_one_char_change(str1, str2):
     """
     Check if two strings are one character change away.
-
-    Can add if it is in top domains in this 
     """
     if len(str1) != len(str2):
         return False
@@ -45,12 +46,16 @@ def string_belongs_to_list(input_str, string_list):
     return 0
 
 # Input string to check
-current_domain = "g0ogle.com"
+current_domain = "http://widi.159-203-94-52.cprapid.com"
+
+addToList(csv_file_path,domain_list)
+addToList(mal_csv_file_path,mal_domain_list)
 
 if string_belongs_to_list(current_domain, domain_list)==1:
     print(f"'{current_domain}' is top domain")
+elif string_belongs_to_list(current_domain, mal_domain_list)==1:
+    print(f"'{current_domain}' is a phishing domain")
 elif string_belongs_to_list(current_domain, domain_list)==2:
-    print(f"'{current_domain}' could be a typo")
+    print(f"'{current_domain}' is a typo")
 else:
     print(f"'{current_domain}' not a typo")
-
