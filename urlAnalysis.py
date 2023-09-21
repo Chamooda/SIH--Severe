@@ -4,17 +4,18 @@ import seaborn as sns
 import re
 import whois
 
-#10 Parameters :
-#   -Protocol (https://, http:// or ftp://)
-#   -Path/Directory
-#   -Number of sub-domains
-#   -Top level Domain (com, org, net, etc)
-#   -Domain Name (google.com, gov.in)
-#   -Domain Registration Date (Unsafe, might not work in some cases)
-#   -Length of top level domain
-#   -Length of URL
-#   -Number of special characters ('-','@','#','$',etc)
-#   -Number of digits
+#!!! Before running the code, set the parameter columns in the csv file with column names mentioned below
+#10 Parameters  :
+#   -Protocol (https://, http:// or ftp://) -- Column Name - "Protocol Risk"
+#   -Path/Directory -- Column Name - "Path"
+#   -Number of sub-domains -- Column Name - "SubDomain Count"
+#   -Top level Domain (com, org, net, etc) -- Column Name - "Top-level Domain"
+#   -Domain Name (google.com, gov.in) -- Column Name - "Domain Name"
+#   -Domain Registration Date (Unsafe, might not work in some cases) -- Column Name - "Domain Registration"
+#   -Length of top level domain -- Column Name - "TLD Length"
+#   -Length of URL -- Column Name - "URL Length"
+#   -Number of special characters ('-','@','#','$',etc) -- Column Name - "Special Character Count"
+#   -Number of digits -- Column Name - "Digit Count"
 
 def get_whois_info(domain_name):
     try:
