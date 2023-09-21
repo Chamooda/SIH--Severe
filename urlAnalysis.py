@@ -4,6 +4,18 @@ import seaborn as sns
 import re
 import whois
 
+#10 Parameters :
+#   -Protocol (https://, http:// or ftp://)
+#   -Path/Directory
+#   -Number of sub-domains
+#   -Top level Domain (com, org, net, etc)
+#   -Domain Name (google.com, gov.in)
+#   -Domain Registration Date (Unsafe, might not work in some cases)
+#   -Length of top level domain
+#   -Length of URL
+#   -Number of special characters ('-','@','#','$',etc)
+#   -Number of digits
+
 def get_whois_info(domain_name):
     try:
         # Query WHOIS information for the domain
@@ -22,10 +34,10 @@ def get_whois_info(domain_name):
         return("Error:", e)
 
 
-legalDomainDatabase=pd.read_csv("verified_online.csv")
+legalDomainDatabase=pd.read_csv("dbAttempt1.csv")
 for i in legalDomainDatabase.index:
     print(i)
-    url=str(legalDomainDatabase["Domain"][i])
+    url=str(legalDomainDatabase["URL"][i])
     protocolRisk="Safe"
     if "http://" in url:
         protocolRisk="Potentially Dangerous"
@@ -37,6 +49,7 @@ for i in legalDomainDatabase.index:
         protocolRisk="Safe"
     legalDomainDatabase["Protocol Risk"][i]=protocolRisk
     
+    url=re.split("//",url)[1]
     subdomains=re.split("\.",url)
     subdomainCount=len(subdomains)
     legalDomainDatabase["SubDomain Count"][i]=subdomainCount
@@ -54,5 +67,20 @@ for i in legalDomainDatabase.index:
         legalDomainDatabase["Domain Registration"][i]="Domain too long"
     else:
         legalDomainDatabase["Domain Registration"][i]=get_whois_info(domainName)
+    
+    specialCharacters=['?','-','%','=','@','!','^','&']
+    legalDomainDatabase["Special Character Count"][i]=0
+    for j in url:
+        if j in specialCharacters:
+            legalDomainDatabase["Special Character Count"][i]+=1
+    
+    legalDomainDatabase["Digit Count"][i]=0
+    for j in url:
+        if ord(j) in range(48,57):
+            legalDomainDatabase["Digit Count"][i]+=1
+    
+    legalDomainDatabase["TLD Length"][i]=len(re.split("/",subdomains[-1])[0])
+    legalDomainDatabase["URL Length"][i]=len(re.split("/",url)[0])
 
-legalDomainDatabase.to_csv("Phishing Database 2.csv",index=False)
+
+legalDomainDatabase.to_csv("Phishing Database 3.csv",index=False)
