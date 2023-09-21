@@ -76,15 +76,13 @@ for i in columns:
 for i in legalDomainDatabase.index:
     print(i)
     originalURL=str(legalDomainDatabase["URL"][i])
-    protocolRisk="Safe"
-    if "http://" in originalURL:
-        protocolRisk="Potentially Dangerous"
-    elif "://" not in originalURL:
-        protocolRisk="Safe"
-    elif "https://" not in originalURL and "ftp://" not in originalURL:
-        protocolRisk="Dangerous"
+    protocolRisk=0
+    if "https://" in originalURL or "http://" in originalURL or "tls://" in originalURL or"ftp://" in originalURL or "ssl://" in originalURL:
+        protocolRisk=1
+    elif "https://" not in originalURL and "ftps://" not in originalURL:
+        protocolRisk=0
     else:
-        protocolRisk="Safe"
+        protocolRisk=0
     legalDomainDatabase["Protocol Risk"][i]=protocolRisk
     
     url=re.split("//",originalURL)[1]
