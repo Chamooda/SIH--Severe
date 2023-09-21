@@ -1,11 +1,15 @@
 import pandas as pd
+import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 import re
 import whois
+import requests
+from bs4 import BeautifulSoup
+
 
 #!!! Before running the code, set the parameter columns in the csv file with column names mentioned below
-#10 Parameters  :
+#15 Parameters  :
 #   -Protocol (https://, http:// or ftp://) -- Column Name - "Protocol Risk"
 #   -Path/Directory -- Column Name - "Path"
 #   -Number of sub-domains -- Column Name - "SubDomain Count"
@@ -16,6 +20,33 @@ import whois
 #   -Length of URL -- Column Name - "URL Length"
 #   -Number of special characters ('-','@','#','$',etc) -- Column Name - "Special Character Count"
 #   -Number of digits -- Column Name - "Digit Count"
+#   -Length of website content -- Column Name - "Content Length"
+#   -Number of redirects -- Column Name - "Redirects"
+#   -Frames -- Column Name - "Frames"
+#   -IFrames -- Column Name - "IFrames"
+#   -Number of tags -- Column Name - "Tags"
+
+def scrapper(url):
+    r = requests.get(url)
+
+    soup = BeautifulSoup(r.content, 'html.parser')
+
+    length = len(r.content)
+    anchors = len(soup.find_all('a'))
+
+    return [length,anchors]
+
+def scrap(url):
+    r = requests.get(url)
+
+    soup = BeautifulSoup(r.content, 'html.parser')
+    
+    frames = len(soup.findAll('frame'))
+    iframes = len(soup.findAll('iframe'))
+    tags = len(soup.findAll())
+
+    return [frames,iframes,tags]
+
 
 def get_whois_info(domain_name):
     try:
@@ -36,21 +67,27 @@ def get_whois_info(domain_name):
 
 
 legalDomainDatabase=pd.read_csv("dbAttempt1.csv")
+columns=["Protocol Risk","Path","SubDomain Count","Top-level Domain","Domain Registration","Domain Name","TLD Length"
+         ,"URL Length","Special Character Count","Digit Count","Content Length","Redirects","Frames","IFrames","Tags"]
+for i in columns:
+    if i not in legalDomainDatabase:
+        legalDomainDatabase[i]=None
+
 for i in legalDomainDatabase.index:
     print(i)
-    url=str(legalDomainDatabase["URL"][i])
+    originalURL=str(legalDomainDatabase["URL"][i])
     protocolRisk="Safe"
-    if "http://" in url:
+    if "http://" in originalURL:
         protocolRisk="Potentially Dangerous"
-    elif "://" not in url:
+    elif "://" not in originalURL:
         protocolRisk="Safe"
-    elif "https://" not in url and "ftp://" not in url:
+    elif "https://" not in originalURL and "ftp://" not in originalURL:
         protocolRisk="Dangerous"
     else:
         protocolRisk="Safe"
     legalDomainDatabase["Protocol Risk"][i]=protocolRisk
     
-    url=re.split("//",url)[1]
+    url=re.split("//",originalURL)[1]
     subdomains=re.split("\.",url)
     subdomainCount=len(subdomains)
     legalDomainDatabase["SubDomain Count"][i]=subdomainCount
@@ -83,5 +120,11 @@ for i in legalDomainDatabase.index:
     legalDomainDatabase["TLD Length"][i]=len(re.split("/",subdomains[-1])[0])
     legalDomainDatabase["URL Length"][i]=len(re.split("/",url)[0])
 
+    legalDomainDatabase["Content Length"][i]=scrapper(originalURL)[0]
+    legalDomainDatabase["Redirects"][i]=scrapper(originalURL)[1]
+    
+    legalDomainDatabase["Frames"][i]=scrap(originalURL)[0]
+    legalDomainDatabase["IFrames"][i]=scrap(originalURL)[1]
+    legalDomainDatabase["Tags"][i]=scrap(originalURL)[2]
 
 legalDomainDatabase.to_csv("Phishing Database 3.csv",index=False)
