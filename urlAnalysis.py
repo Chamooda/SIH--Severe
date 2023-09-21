@@ -77,7 +77,7 @@ for i in legalDomainDatabase.index:
     print(i)
     originalURL=str(legalDomainDatabase["URL"][i])
     protocolRisk=0
-    if "https://" in originalURL or "http://" in originalURL or "tls://" in originalURL or"ftp://" in originalURL or "ssl://" in originalURL:
+    if "https://" in originalURL or "http://" in originalURL or "tls://" in originalURL or"ftps://" in originalURL or "ssl://" in originalURL:
         protocolRisk=1
     elif "https://" not in originalURL and "ftps://" not in originalURL:
         protocolRisk=0
