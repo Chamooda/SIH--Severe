@@ -1,2 +1,11 @@
 Flask
 gunicorn==19.7.1
+pandas
+joblib
+numpy
+sklearn.metrics
+re
+requests
+bs4
+joblib
+
