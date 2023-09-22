@@ -3,7 +3,6 @@ gunicorn==19.7.1
 pandas
 joblib
 numpy
-sklearn
 scikit-learn
 re
 requests
