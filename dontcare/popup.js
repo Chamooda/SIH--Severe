@@ -28,7 +28,7 @@ async function chrome_tab(tabs) {
 
 document.body.appendChild(button);
 async function fetchData() {
-  var st = urls.replaceAll("/", "       ");
+  var st = urls.replaceAll("/", "  ");
   console.log(st);
   const url = "https://dontcare-atot.onrender.com/urls/" + st;
   const response = await fetch(url);
