@@ -3,7 +3,8 @@ gunicorn==19.7.1
 pandas
 joblib
 numpy
-sklearn.metrics
+sklearn
+scikit-learn
 re
 requests
 bs4
