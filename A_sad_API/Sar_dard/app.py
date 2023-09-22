@@ -3,7 +3,7 @@ app = Flask(__name__)
 
 @app.route('/urls/<string:urls>')
 def urls_playboy(urls):
-    urls = urls.replace('  ','/')
+    urls = urls.replace(' ','/')
     return jsonify({
         'status': 'ok',
         'message': 'Hello World!',
