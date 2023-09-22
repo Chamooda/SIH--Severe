@@ -6,4 +6,4 @@ numpy
 requests
 bs4
 joblib
-scikit-learn==2.8.2
+scikit-learn
