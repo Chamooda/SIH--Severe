@@ -1,6 +1,6 @@
-import pandas as pd
+import pandas
 import joblib
-import numpy as np
+import numpy
 from sklearn.metrics import classification_report
 
 import re
@@ -108,7 +108,7 @@ def Mainly(url):
         for i in columns:
             urlDict[i]=urlList[k]
             k+=1
-        parameterDf=model.predict(np.array([urlList]))
+        parameterDf=model.predict(numpy.array([urlList]))
 
     if parameterDf==0:
         return "The given website is legal"
