@@ -9,7 +9,7 @@ def urls_playboy(urls):
     return jsonify({
         'status': 'ok',
         'message': 'Hello World!',
-        'urls': output})
+        'urls': urls})
     
 
 @app.route('/justcheckin')
