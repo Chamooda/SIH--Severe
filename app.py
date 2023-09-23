@@ -5,11 +5,11 @@ app = Flask(__name__)
 @app.route('/urls/<string:urls>')
 def urls_playboy(urls):
     urls = urls.replace(' ','/')
-    
+    output = Mainly(urls)
     return jsonify({
         'status': 'ok',
         'message': 'Hello World!',
-        'urls': urls})
+        'urls': output})
     
 
 @app.route('/justcheckin')
