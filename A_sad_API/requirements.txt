@@ -1,9 +1,0 @@
-Flask
-gunicorn==19.7.1
-flask
-numpy
-pandas
-bs4
-scikit-learn
-joblib
-requests
