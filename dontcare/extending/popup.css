@@ -1,0 +1,74 @@
+body {
+    margin: 0;
+    overflow: hidden; /* Hide overflowing content */
+    background-color: #87CEEB; /* Set a background color */
+    padding: 20px 20px;
+    padding-bottom: 30px;
+    
+}
+
+.block
+{
+    display: block;
+    width: 100%;
+    
+}
+
+
+button{
+    background-color: #09095f;
+    border: none;
+    color: white;
+    padding: 10px 40px;
+    opacity:  60;
+    text-align: center;
+    font-size: 15px;
+    margin: 2px 1px;
+    cursor: pointer;
+    border-radius: 8px;
+    width: 300px;
+}
+
+.fish-container {
+    position: absolute;
+    top: 0;
+    left: -50px; /* Start the fish off-screen */
+    animation: fishSwim 10s linear infinite; /* Apply the animation */
+    z-index: 2;
+}
+
+.over {
+    z-index: 1;
+    align-items: center;
+    text-align: center;
+    font-size: 20px;
+
+}
+
+
+.fish {
+    width: 200px;
+    height: 100px;
+    background-image: url('transparent.gif'); /* Replace 'your-fish.gif' with your fish GIF file */
+    background-size: cover;
+    position: relative;
+    animation: fishMove 4s alternate infinite; /* Apply the swimming animation */
+}
+
+@keyframes fishSwim {
+    0% {
+        transform: translateX(-100%); /* Start position */
+    }
+    100% {
+        transform: translateX(100%); /* End position */
+    }
+}
+
+@keyframes fishMove {
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(-20px); /* Vertical movement */
+    }
+}
