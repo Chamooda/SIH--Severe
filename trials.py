@@ -79,7 +79,7 @@ def urlBreaker(originalURL):
         pass
     return parameters
 
-model=joblib.load('rfcModel.sav')
+model=joblib.load('rfcModelv4.sav')
 
 columns = ["Protocol Risk",
            "SubDomain Count",
